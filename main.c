@@ -1,11 +1,10 @@
 #include <stdio.h>
+#include "command.h"
+#include <string.h>
 
 int main(int argc, char **argv)
 {
-    for (int i = 0; i < argc; i++)
-    {
-        printf("{%d} - %s \n", i ,argv[i]);
-    }
-    
+    run_command("create -f asd -p asd");
+
     return 0;
 }
