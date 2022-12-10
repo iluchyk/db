@@ -18,7 +18,7 @@ extern int run_command(char *s_cmd)
 
     cmd = malloc(sizeof(command_t));
     parse_command(cmd, s_cmd);
-    //free_cmd(cmd);
+    free_cmd(cmd);
     return 0;
 }
 
@@ -40,29 +40,28 @@ static void set_argument(command_t *cmd, char *s_cmd)
     char a_cmd[len];
     strncpy(a_cmd, s_cmd, len);
 
-    cmd->args = malloc(sizeof(arguments_t) * size_of_argument); 
-    
-    arguments_t **args_p = &(cmd->args);
+    cmd->args = malloc(sizeof(arguments_t) * size_of_argument);
 
-    while (*args_p != NULL)
+    char *token = strtok(a_cmd, ARGS_SEPPARATOR);
+    for (size_t i = 0; i < size_of_argument; i++)
     {
-        printf("%p\n", *args_p);
-        (*args_p)++;
+        (cmd->args + i)->key = token[0];
+        token = strtok(NULL, ARGS_SEPPARATOR);
+        int value_l = strlen(token);
+        (cmd->args + i)->value = malloc(sizeof(char) * value_l);
+        strncpy((cmd->args + i)->value, token, value_l);
+        token = strtok(NULL, ARGS_SEPPARATOR);
     }
-    
-        
 }
 
 static void free_cmd(command_t *cmd)
 {
-    while (cmd->args)
-    {
-        arguments_t *temp = cmd->args;
-        // free(cmd->args->value);
-        free(cmd->args);
-        cmd->args == temp++;
-    }
 
+    for (size_t i = 0; i <= sizeof(*(cmd->args))/sizeof(arguments_t); i++)
+    {
+        free((cmd->args + i)->value);
+    }
+    
     free(cmd->comand);
     free(cmd);
 }

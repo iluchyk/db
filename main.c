@@ -5,6 +5,5 @@
 int main(int argc, char **argv)
 {
     run_command("create -f asd -p asd");
-
     return 0;
 }
